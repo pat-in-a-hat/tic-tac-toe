@@ -20,7 +20,7 @@ function ticTacToeBuilder(){
     const header1 = document.createElement('div')
     const header2 = document.createElement('div')
     header1.className = 'col-3 h1 card bg-light'
-    header2.className = 'col-3 h1 bg-light'
+    header2.className = 'col-3 h1'
     header1.setAttribute('id', 'player1')
     header2.setAttribute('id', 'player2')
     header1.appendChild(playerx)
@@ -92,20 +92,36 @@ function player(){
                 let player1 = document.getElementById('player1')
                 let player2 = document.getElementById('player2')
                 document.getElementById(`${child.id}`).addEventListener('click', () => {
-                    if ((child.innerHTML === 'X' || child.innerHTML === 'O') || referee() === true){
+                    if (referee() === 'X' || referee() === 'O'){
+                        document.getElementById(`tic-tac-toe`).removeEventListener('click', () => {
+                            console.log(referee)
+                            console.log('game finished!')
+                        })
+                        console.log('game finished')
+                        const winner = document.createElement('h1')
+                        if (referee() === 'X'){
+                            const win_phrase = document.createTextNode(`X Wins!`)
+                            winner.appendChild(win_phrase)
+                        } else{
+                            const win_phrase = document.createTextNode(`O Wins!`)
+                            winner.appendChild(win_phrase)
+                        }
+                        winner.className = 'text-center justify-content-center'
+                        document.getElementById('tic-tac-toe').appendChild(winner)
+                    } else if ((child.innerHTML === 'X' || child.innerHTML === 'O')){
                         console.log('already played')
                     } else if (counter % 2 === 0){
                         let X = document.createTextNode('X')
                         counter++
                         child.appendChild(X)
-                        player1.className = 'col-3 h1 bg-light'
+                        player1.className = 'col-3 h1'
                         player2.className = 'col-3 h1 card bg-light'
                     } else {
                         let O = document.createTextNode('O')
                         counter++
                         child.appendChild(O)
                         player1.className = 'col-3 h1 card bg-light'
-                        player2.className = 'col-3 h1 bg-light'
+                        player2.className = 'col-3 h1'
                     }
                 })
                 
@@ -115,13 +131,36 @@ function player(){
 }
 
 function referee(){
-    judge_array = [
-        []
-    ]
-    const col1 = document.getElementById('row-0')
-    const col2 = document.getElementById('row-1')
-    const col3 = document.getElementById('row-2')
-    return true
+    const col1 = document.getElementById('col-0-0')?.innerHTML
+    const col2 = document.getElementById('col-0-1')?.innerHTML
+    const col3 = document.getElementById('col-0-2')?.innerHTML
+    const col4 = document.getElementById('col-1-0')?.innerHTML
+    const col5 = document.getElementById('col-1-1')?.innerHTML
+    const col6 = document.getElementById('col-1-2')?.innerHTML
+    const col7 = document.getElementById('col-2-0')?.innerHTML
+    const col8 = document.getElementById('col-2-1')?.innerHTML
+    const col9 = document.getElementById('col-2-2')?.innerHTML
+
+
+    if (col1 === col2 && col2 === col3){
+        return col1
+    } else if (col4 === col5 && col5 === col6){
+        return col4
+    } else if (col7 === col8 && col8 === col9){
+        return col7
+    } else if (col1 === col4 && col4 === col7){
+        return col1
+    } else if (col2 === col5 && col5 === col8){
+        return col2
+    } else if (col3 === col6 && col6 === col9){
+        return col3
+    } else if (col1 === col5 && col5 === col9){
+        return col1
+    }else if (col3 === col5 && col5 === col7){
+        return col3
+    } else{
+        return false
+    }
 }
 
 
@@ -134,7 +173,6 @@ function reset(){
     })
     ticTacToeBuilder();
 }
-
 
 //counter that shows whose turn it is
 
