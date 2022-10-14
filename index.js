@@ -9,6 +9,11 @@ $('.btn-dark').on('click', () => {
     $('#tic-tac-toe').remove();
     ticTacToeBuilder();
 })*/
+/*function reset(){
+        while(document.getElementById('tic-tac-toe').firstChild){
+            document.getElementById('tic-tac-toe').removeChild(document.getElementById('tic-tac-toe').firstChild)
+        }
+}*/
 
 function ticTacToeBuilder(){
     const table = document.getElementById('tic-tac-toe')
@@ -58,6 +63,7 @@ function ticTacToeBuilder(){
     button.className = 'btn btn-light'
     const reset = document.createTextNode('Reset')
     button.appendChild(reset)
+    button.setAttribute('id', 'reset-button')
     table.appendChild(br)
     table.appendChild(br)
     table.appendChild(br)
@@ -65,7 +71,7 @@ function ticTacToeBuilder(){
     btn_div.appendChild(button)
 
     player();
-
+    resetButton();
 }
 
 
@@ -91,43 +97,64 @@ function player(){
             for (let child of children){
                 let player1 = document.getElementById('player1')
                 let player2 = document.getElementById('player2')
-                document.getElementById(`${child.id}`).addEventListener('click', () => {
-                    if (referee() === 'X' || referee() === 'O'){
-                        document.getElementById(`tic-tac-toe`).removeEventListener('click', () => {
-                            console.log(referee)
-                            console.log('game finished!')
-                        })
-                        console.log('game finished')
-                        const winner = document.createElement('h1')
-                        if (referee() === 'X'){
-                            const win_phrase = document.createTextNode(`X Wins!`)
-                            winner.appendChild(win_phrase)
-                        } else{
-                            const win_phrase = document.createTextNode(`O Wins!`)
-                            winner.appendChild(win_phrase)
-                        }
-                        winner.className = 'text-center justify-content-center'
-                        document.getElementById('tic-tac-toe').appendChild(winner)
-                    } else if ((child.innerHTML === 'X' || child.innerHTML === 'O')){
-                        console.log('already played')
-                    } else if (counter % 2 === 0){
-                        let X = document.createTextNode('X')
-                        counter++
-                        child.appendChild(X)
-                        player1.className = 'col-3 h1'
-                        player2.className = 'col-3 h1 card bg-light'
-                    } else {
-                        let O = document.createTextNode('O')
-                        counter++
-                        child.appendChild(O)
-                        player1.className = 'col-3 h1 card bg-light'
-                        player2.className = 'col-3 h1'
-                    }
-                })
-                
+                    document.getElementById(`${child.id}`).addEventListener('click', () => {
+                        //if (document.querySelector('alert')?.innerHTML === undefined){
+                            if ((child.innerHTML === 'X' || child.innerHTML === 'O')){
+                                console.log('already played')
+                                referee();
+                            } else if (counter % 2 === 0){
+                                    let X = document.createTextNode('X')
+                                    counter++
+                                    child.appendChild(X)
+                                    player1.className = 'col-3 h1'
+                                    player2.className = 'col-3 h1 card bg-light'
+                                    referee();
+    
+                            } else {
+                                    let O = document.createTextNode('O')
+                                    counter++
+                                    child.appendChild(O)
+                                    player1.className = 'col-3 h1 card bg-light'
+                                    player2.className = 'col-3 h1'
+                                    referee();
+                                
+                                }
+                        /*} else {
+                            console.log('cannot play, game is over')
+                        }*/
+                       
+                    })
             }
             
+    }
+}
+
+function endGame(winner){
+    const alert = document.createElement('div')
+    alert.className = 'alert alert-success'
+    alert.setAttribute('role', 'alert')
+    console.log('game finished')
+    const win_phrase = document.createTextNode(`${winner} wins!`)
+    alert.appendChild(win_phrase)
+    document.getElementById('tic-tac-toe').appendChild(alert)
+/*
+    else if (referee() === 'tie'){
+        if (document.getElementsByClassName('alert').length > 0){
+            const alert = document.createElement('div')
+            alert.className = 'alert alert-primary'
+            alert.setAttribute('role', 'alert')
+            console.log('game finished')
+            const win_phrase = document.createTextNode(`Tie Game`)
+            alert.appendChild(win_phrase)
+            document.getElementById('tic-tac-toe').appendChild(alert)
+            return true
+        } else {
+            return true
         }
+    } else {
+    console.log('game continues')
+    return false
+    }*/
 }
 
 function referee(){
@@ -141,38 +168,59 @@ function referee(){
     const col8 = document.getElementById('col-2-1')?.innerHTML
     const col9 = document.getElementById('col-2-2')?.innerHTML
 
+    const col_array = [col1,col2,col3,col4,col5,col6,col7,col8,col9]
 
     if (col1 === col2 && col2 === col3){
+        endGame(col1)
         return col1
     } else if (col4 === col5 && col5 === col6){
+        endGame(col4)
         return col4
     } else if (col7 === col8 && col8 === col9){
+        endGame(col7)
         return col7
     } else if (col1 === col4 && col4 === col7){
+        endGame(col1)
         return col1
     } else if (col2 === col5 && col5 === col8){
+        endGame(col2)
         return col2
     } else if (col3 === col6 && col6 === col9){
+        endGame(col3)
         return col3
     } else if (col1 === col5 && col5 === col9){
+        endGame(col1)
         return col1
     }else if (col3 === col5 && col5 === col7){
+        endGame(col3)
         return col3
-    } else{
+    } else if (col_array.includes(undefined) === false){
+        endGame('tie')
+        return 'tie'
+    }else{
         return false
     }
 }
 
-
-
-function reset(){
-    $('.btn-light').on('click', () => {
+function resetButton(){
+    let btn = document.getElementById('reset-button')
+    btn.addEventListener('click', () => {
         while(document.getElementById('tic-tac-toe').firstChild){
             document.getElementById('tic-tac-toe').removeChild(document.getElementById('tic-tac-toe').firstChild)
         }
+        ticTacToeBuilder();
+        
     })
-    ticTacToeBuilder();
 }
+
+/*$('.btn-light').on('click', () => {
+    
+    while(document.getElementById('tic-tac-toe').firstChild){
+        document.getElementById('tic-tac-toe').removeChild(document.getElementById('tic-tac-toe').firstChild)
+    }
+    ticTacToeBuilder();
+})*/
+
 
 //counter that shows whose turn it is
 
