@@ -1,20 +1,14 @@
 //Montana Code School Week 11 Project
+//Patrick Warner - 10/2022
 
+//using some jquery for practice. Just a simple button that hides itself and presents the tic tac toe board when clicked
 $('.btn-dark').on('click', () => {
     $('.btn').hide();
     ticTacToeBuilder();
 })
 
-/*$('.btn-light').on('click', () => {
-    $('#tic-tac-toe').remove();
-    ticTacToeBuilder();
-})*/
-/*function reset(){
-        while(document.getElementById('tic-tac-toe').firstChild){
-            document.getElementById('tic-tac-toe').removeChild(document.getElementById('tic-tac-toe').firstChild)
-        }
-}*/
-
+//the building function for the tic tac toe board. builds divs with columns in it
+//also has a reset button at the bottom of it
 function ticTacToeBuilder(){
     const table = document.getElementById('tic-tac-toe')
     const div = document.createElement("div")
@@ -34,6 +28,7 @@ function ticTacToeBuilder(){
     parent_div.appendChild(header1)
     parent_div.appendChild(header2)
 
+    //two for loops that run 3 times to build 3x3 tic tac toe board
     for(let i = 0; i <3; i++){
         const row = document.createElement('div')
         row.className = "row game--container text-center justify-content-center"
@@ -45,17 +40,11 @@ function ticTacToeBuilder(){
             div_cols.className = 'cell border bg-light'
             div_cols.setAttribute('id', `col-${i}-${ii}`)
             row_div.appendChild(div_cols)
-            /*const row_col = document.getElementById(`col-${i}-${ii}`)
-            const div_cards = document.createElement('div')
-            div_cards.className = 'cell border bg-light'
-            const test = document.createTextNode('ii')
-            div_cards.appendChild(test)
-            row_col.appendChild(div_cards)*/
             }
-            //div_cards.setAttribute('style', "width: 80px height: 80px")
             
         }
 
+    //reset button
     const br = document.createElement('br')
     const btn_div = document.createElement('div')
     btn_div.className = 'text-center justify-content-center'
@@ -70,25 +59,26 @@ function ticTacToeBuilder(){
     table.appendChild(btn_div)
     btn_div.appendChild(button)
 
+    //
     player();
     resetButton();
 }
 
-
-   
-    /*
-    $('#tic-tac-toe').prepend('<div class="row text-center justify-content-center" id="players"></div>')
-    $('#players').append('<div class="col"><h1>Player X</h1></div>')
-    $('#players').append('<div class="col"><h1>Player O</h1></div>')
-    for(let i = 0; i <3; i++){
-        $('#tic-tac-toe').append(`<div class="row gx-5 justify-content-center" id='row-${i}'></div>`)
-        for(let ii = 0; ii <3; ii++){
-            $(`#row-${i}`).append(`<div class="col-3 border"></div>`)
+//reset button which clears the html child elements in the table and then runs tic tac toe builder again to make a new board
+function resetButton(){
+    let btn = document.getElementById('reset-button')
+    btn.addEventListener('click', () => {
+        while(document.getElementById('tic-tac-toe').firstChild){
+            document.getElementById('tic-tac-toe').removeChild(document.getElementById('tic-tac-toe').firstChild)
         }
-    }
-    $('.border').append('<div class="card "></div>')
-    $('#tic-tac-toe').after('<br><br><div class="container text-center"><button class="btn btn-light">Reset</button></div>')*/
+        ticTacToeBuilder();
+        
+    })
+}
 
+//function that uses nested for loops to create click events on each div in the tic tac toe table
+//when clicked, it makes sure the game is not already over (decided by referee function) and makes sure you haven't played in a square
+//it then uses a counter and modulus to play an X or an O, and has the referee function execute each time to make sure someone hasn't won
 function player(){
     let counter = 0;
     let rows = document.querySelectorAll('.game--container')
@@ -98,7 +88,7 @@ function player(){
                 let player1 = document.getElementById('player1')
                 let player2 = document.getElementById('player2')
                     document.getElementById(`${child.id}`).addEventListener('click', () => {
-                        //if (document.querySelector('alert')?.innerHTML === undefined){
+                        if(document.getElementsByClassName('alert').length < 1){
                             if ((child.innerHTML === 'X' || child.innerHTML === 'O')){
                                 console.log('already played')
                                 referee();
@@ -119,9 +109,9 @@ function player(){
                                     referee();
                                 
                                 }
-                        /*} else {
+                        } else {
                             console.log('cannot play, game is over')
-                        }*/
+                        }
                        
                     })
             }
@@ -129,34 +119,35 @@ function player(){
     }
 }
 
+//this function creates the bootstrap alert for a winner
+//if the alert is already created it does nothing
 function endGame(winner){
-    const alert = document.createElement('div')
-    alert.className = 'alert alert-success'
-    alert.setAttribute('role', 'alert')
-    console.log('game finished')
-    const win_phrase = document.createTextNode(`${winner} wins!`)
-    alert.appendChild(win_phrase)
-    document.getElementById('tic-tac-toe').appendChild(alert)
-/*
-    else if (referee() === 'tie'){
-        if (document.getElementsByClassName('alert').length > 0){
-            const alert = document.createElement('div')
-            alert.className = 'alert alert-primary'
-            alert.setAttribute('role', 'alert')
-            console.log('game finished')
-            const win_phrase = document.createTextNode(`Tie Game`)
-            alert.appendChild(win_phrase)
-            document.getElementById('tic-tac-toe').appendChild(alert)
-            return true
-        } else {
-            return true
-        }
+    if(document.getElementsByClassName('alert').length < 1){
+    if (winner === 'tie'){
+        const alert = document.createElement('div')
+        alert.className = 'alert alert-primary text-center'
+        alert.setAttribute('role', 'alert')
+        console.log('game finished')
+        const win_phrase = document.createTextNode(`Tie game, click reset to play again.`)
+        alert.appendChild(win_phrase)
+        document.getElementById('tic-tac-toe').appendChild(alert)
+    } else{
+        const alert = document.createElement('div')
+        alert.className = 'alert alert-success text-center'
+        alert.setAttribute('role', 'alert')
+        console.log('game finished')
+        const win_phrase = document.createTextNode(`${winner} wins!`)
+        alert.appendChild(win_phrase)
+        document.getElementById('tic-tac-toe').appendChild(alert)
+    }
     } else {
-    console.log('game continues')
-    return false
-    }*/
+        console.log('tie or win already happened!')
+    }
+    
 }
 
+//series of if statements to assess the winner by seeing if the innerHTMl matches on three adjacent boxes
+//looks at all possible win combinations, have the function executed after each click so the game will stop if someone wins
 function referee(){
     const col1 = document.getElementById('col-0-0')?.innerHTML
     const col2 = document.getElementById('col-0-1')?.innerHTML
@@ -170,59 +161,35 @@ function referee(){
 
     const col_array = [col1,col2,col3,col4,col5,col6,col7,col8,col9]
 
-    if (col1 === col2 && col2 === col3){
+    if ((col1 === col2 && col2 === col3) && (col1 === 'X' || col1 === 'O')){
         endGame(col1)
         return col1
-    } else if (col4 === col5 && col5 === col6){
+    } else if ((col4 === col5 && col5 === col6) && (col4 === 'X' || col4 === 'O')){
         endGame(col4)
         return col4
-    } else if (col7 === col8 && col8 === col9){
+    } else if ((col7 === col8 && col8 === col9) && (col7 === 'X' || col7 === 'O')){
         endGame(col7)
         return col7
-    } else if (col1 === col4 && col4 === col7){
+    } else if ((col1 === col4 && col4 === col7) && (col4 === 'X' || col4 === 'O')){
         endGame(col1)
         return col1
-    } else if (col2 === col5 && col5 === col8){
+    } else if ((col2 === col5 && col5 === col8) && (col2 === 'X' || col2 === 'O')){
         endGame(col2)
         return col2
-    } else if (col3 === col6 && col6 === col9){
+    } else if ((col3 === col6 && col6 === col9) && (col3 === 'X' || col3 === 'O')){
         endGame(col3)
         return col3
-    } else if (col1 === col5 && col5 === col9){
+    } else if ((col1 === col5 && col5 === col9) && (col1 === 'X' || col1 === 'O')){
         endGame(col1)
         return col1
-    }else if (col3 === col5 && col5 === col7){
+    }else if ((col3 === col5 && col5 === col7) && (col3 === 'X' || col3 === 'O')){
         endGame(col3)
         return col3
-    } else if (col_array.includes(undefined) === false){
+    } else if (col_array.includes('') === false){
         endGame('tie')
         return 'tie'
     }else{
+        //console.group('no trigger')
         return false
     }
 }
-
-function resetButton(){
-    let btn = document.getElementById('reset-button')
-    btn.addEventListener('click', () => {
-        while(document.getElementById('tic-tac-toe').firstChild){
-            document.getElementById('tic-tac-toe').removeChild(document.getElementById('tic-tac-toe').firstChild)
-        }
-        ticTacToeBuilder();
-        
-    })
-}
-
-/*$('.btn-light').on('click', () => {
-    
-    while(document.getElementById('tic-tac-toe').firstChild){
-        document.getElementById('tic-tac-toe').removeChild(document.getElementById('tic-tac-toe').firstChild)
-    }
-    ticTacToeBuilder();
-})*/
-
-
-//counter that shows whose turn it is
-
-//check to make sure it hasn't been clicked yet
-//index of arrays for correct combinations then compare to array of selected
