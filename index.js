@@ -18,8 +18,8 @@ function ticTacToeBuilder(){
     table.appendChild(div)
     const header1 = document.createElement('div')
     const header2 = document.createElement('div')
-    header1.className = 'col-3 h1 card bg-light'
-    header2.className = 'col-3 h1'
+    header1.className = 'col-3 h2 card bg-light'
+    header2.className = 'col-3 h2'
     header1.setAttribute('id', 'player1')
     header2.setAttribute('id', 'player2')
     header1.appendChild(playerx)
@@ -96,16 +96,16 @@ function player(){
                                     let X = document.createTextNode('X')
                                     counter++
                                     child.appendChild(X)
-                                    player1.className = 'col-3 h1'
-                                    player2.className = 'col-3 h1 card bg-light'
+                                    player1.className = 'col-3 h2'
+                                    player2.className = 'col-3 h2 card bg-light'
                                     referee();
     
                             } else {
                                     let O = document.createTextNode('O')
                                     counter++
                                     child.appendChild(O)
-                                    player1.className = 'col-3 h1 card bg-light'
-                                    player2.className = 'col-3 h1'
+                                    player1.className = 'col-3 h2 card bg-light'
+                                    player2.className = 'col-3 h2'
                                     referee();
                                 
                                 }

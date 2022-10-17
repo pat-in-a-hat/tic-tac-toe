@@ -1,14 +1,14 @@
 {
-  "name": "week_11_project",
+  "name": "tic_tac_toe_game",
   "version": "1.0.0",
-  "description": "montana code school week 11 project",
+  "description": "in READme.md",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "coming soon!"
+    "url": "https://github.com/pat-in-a-hat/week_11_project"
   },
   "author": "Patrick Warner",
   "license": "ISC",
